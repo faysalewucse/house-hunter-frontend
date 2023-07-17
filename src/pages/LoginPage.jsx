@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
 
 const LoginPage = () => {
-  const { setOpen } = useAuth();
+  const { setOpen, setCurrentUser } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -34,6 +34,8 @@ const LoginPage = () => {
 
       if (response.status === 200) {
         localStorage.setItem("userEmail", email);
+
+        setCurrentUser(email);
         navigate("/");
       } else {
         toast.error("Something went wrong! Try again.");

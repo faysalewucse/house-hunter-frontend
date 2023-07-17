@@ -1,7 +1,6 @@
 import brand from "/brand.png";
 import avatar from "/avatar.png";
 import { NavLink } from "react-router-dom";
-import { dropdownItems, navItems } from "./navItems";
 import { Container } from "../Container";
 import { MdOutlineWbSunny } from "react-icons/md";
 import { SlClose, SlMenu } from "react-icons/sl";
@@ -10,7 +9,8 @@ import { useTheme } from "../../context/ThemeContext";
 import { useAuth } from "../../context/AuthContext";
 
 export const Navbar = () => {
-  const { setCurentUser, open, isOpen, setOpen, setIsOpen } = useAuth();
+  const { currentUser, setCurentUser, open, isOpen, setOpen, setIsOpen } =
+    useAuth();
 
   const { isDark, toggleDarkMode } = useTheme();
 
@@ -23,6 +23,21 @@ export const Navbar = () => {
     setCurentUser(null);
   };
 
+  const navItems = [
+    { route: "/", label: "Home", visible: true },
+    { route: "/about", label: "About", visible: true },
+    {
+      route: "/sign-in",
+      label: "Login",
+      visible: !currentUser ? true : false,
+    },
+  ];
+
+  const dropdownItems = [
+    { route: "/profile", label: "Profile", for: "user" },
+    { route: "/my-houses", label: "My Houses", for: "user" },
+  ];
+
   return (
     <div className="border-b-[1px] dark:border-gray-900 p-5 dark:bg-slate-950">
       <Container>
@@ -31,14 +46,16 @@ export const Navbar = () => {
           <nav
             className={`flex flex-col md:flex-row md:relative absolute ${
               open ? "top-0 bg-white dark:bg-slate-800" : "-top-full"
-            } right-0 md:w-fit w-full gap-5 transition-all duration-300 md:h-0 md:gap-10 p-5 text-lg items-center z-20`}
+            } right-0 md:w-fit w-full gap-5 transition-all duration-300 md:h-0 md:gap-10 sm:py-0 py-20 text-lg items-center z-20`}
           >
             {navItems.map((navItem, index) => (
               <NavLink
                 className={({ isActive }) =>
                   isActive
                     ? "font-semibold text-primary"
-                    : "hover:text-primary dark:text-white dark:hover:text-primary"
+                    : `hover:text-primary dark:text-white dark:hover:text-primary ${
+                        !navItem.visible && "hidden"
+                      }`
                 }
                 to={navItem.route}
                 key={index}
@@ -82,11 +99,11 @@ export const Navbar = () => {
                   {/* Menu items */}
                   {dropdownItems.map((item, index) => (
                     <NavLink
-                      to={item.path}
+                      to={item.route}
                       key={index}
                       className={`block px-4 py-2 hover:text-primary`}
                     >
-                      {item.pathName}
+                      {item.label}
                     </NavLink>
                   ))}
                   <NavLink

@@ -5,8 +5,10 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import axios from "axios";
 import Button from "../components/Shared/Button";
 import toast from "react-hot-toast";
+import { useAuth } from "../context/AuthContext";
 
 const RegisterPage = () => {
+  const { setCurrentUser } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -23,7 +25,7 @@ const RegisterPage = () => {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_BASE_API_URL}/user`,
+        `${import.meta.env.VITE_BASE_API_URL}/register`,
         {
           userName,
           role,
@@ -35,6 +37,7 @@ const RegisterPage = () => {
 
       if (response.status === 200) {
         localStorage.setItem("userEmail", email);
+        setCurrentUser(email);
         navigate("/");
       } else {
         toast.error("Something went wrong! Try again.");
