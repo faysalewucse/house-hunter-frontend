@@ -1,5 +1,13 @@
+import { RouterProvider } from "react-router-dom";
+import { router } from "./routes/router";
+import { ThemeProvider } from "./context/ThemeContext";
+
 const App = () => {
-  return <div className="font-bold text-4xl"></div>;
+  return (
+    <ThemeProvider>
+      <RouterProvider router={router} />
+    </ThemeProvider>
+  );
 };
 
 export default App;
