@@ -1,12 +1,11 @@
 export const navItems = [
-  { path: "/", pathName: "Home", for: "user" },
-  { path: "/about", pathName: "About", for: "user" },
-  { path: "/item", pathName: "Item", for: "user" },
-  { path: "/item", pathName: "Item", for: "user" },
+  { route: "/", label: "Home", for: "user" },
+  { route: "/about", label: "About", for: "user" },
+  { route: "/sign-in", label: "Login", for: "user" },
 ];
 
 export const dropdownItems = [
-  { path: "/profile", pathName: "Profile", for: "user" },
-  { path: "/myorders", pathName: "My Orders", for: "user" },
-  { path: "/settings", pathName: "Settings" },
+  { route: "/profile", label: "Profile", for: "user" },
+  { route: "/myorders", label: "My Orders", for: "user" },
+  { route: "/settings", label: "Settings" },
 ];

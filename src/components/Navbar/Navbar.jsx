@@ -1,46 +1,43 @@
 import brand from "/brand.png";
 import avatar from "/avatar.png";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { dropdownItems, navItems } from "./navItems";
 import { Container } from "../Container";
 import { MdOutlineWbSunny } from "react-icons/md";
 import { SlClose, SlMenu } from "react-icons/sl";
-import { AiOutlineShoppingCart } from "react-icons/ai";
 import { HiMoon } from "react-icons/hi";
 import { useTheme } from "../../context/ThemeContext";
 import { useState } from "react";
 
 export const Navbar = () => {
   const { isDark, toggleDarkMode } = useTheme();
-  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const currentUser = true;
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
   return (
-    <div className="border-b-[1px] p-7 dark:bg-slate-950">
+    <div className="border-b-[1px] dark:border-gray-900 p-5 dark:bg-slate-950">
       <Container>
         <div className="flex items-center justify-between">
           <img className="w-12" src={brand} alt="brand" />
           <nav
             className={`flex flex-col md:flex-row md:relative absolute ${
-              open ? "top-5 bg-white dark:bg-black" : "-top-full"
-            } right-0 md:w-fit w-full gap-5 transition-all duration-300 md:h-0 md:gap-10 rounded-b-xl md:rounded-b-none p-5 text-lg items-center z-20`}
+              open ? "top-0 bg-white dark:bg-slate-800" : "-top-full"
+            } right-0 md:w-fit w-full gap-5 transition-all duration-300 md:h-0 md:gap-10 p-5 text-lg items-center z-20`}
           >
             {navItems.map((navItem, index) => (
               <NavLink
                 className={({ isActive }) =>
                   isActive
                     ? "font-semibold text-primary"
-                    : "hover:text-primary dark:text-white"
+                    : "hover:text-primary dark:text-white dark:hover:text-primary"
                 }
-                to={navItem.path}
+                to={navItem.route}
                 key={index}
               >
-                {navItem.pathName}
+                {navItem.label}
               </NavLink>
             ))}
             <div className="flex items-center gap-8">
@@ -54,19 +51,6 @@ export const Navbar = () => {
                   <HiMoon size={"1.5em"} />
                 )}
               </div>
-
-              {/* Cart */}
-              {currentUser && (
-                <div className="relative">
-                  <AiOutlineShoppingCart
-                    onClick={() => navigate("/cart")}
-                    className="text-3xl cursor-pointer dark:text-white"
-                  />
-                  <span className="absolute -right-3 -top-3 font-bold text-sm w-6 h-6 rounded-full flex items-center justify-center dark:bg-white bg-black text-white dark:text-black">
-                    21
-                  </span>
-                </div>
-              )}
 
               {/* Dropdown Avatar */}
               <div className="relative inline-block">
@@ -110,9 +94,9 @@ export const Navbar = () => {
           </nav>
           <div onClick={() => setOpen(!open)} className="md:hidden text-2xl">
             {open ? (
-              <SlClose className="absolute right-6 top-9 text-3xl z-20" />
+              <SlClose className="dark:text-white absolute right-6 top-9 text-3xl z-20" />
             ) : (
-              <SlMenu className="text-black text-xl" />
+              <SlMenu className="dark:text-white text-black text-xl" />
             )}
           </div>
         </div>
