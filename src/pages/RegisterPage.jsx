@@ -3,9 +3,12 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import axios from "axios";
+import Button from "../components/Shared/Button";
+import toast from "react-hot-toast";
 
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const {
@@ -15,21 +18,31 @@ const RegisterPage = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
+    setLoading(true);
     const { userName, role, password, phoneNumber, email } = data;
 
-    const response = await axios.post(
-      `${import.meta.env.VITE_BASE_API_URL}/user`,
-      {
-        userName,
-        role,
-        password,
-        phoneNumber,
-        email,
-      }
-    );
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_API_URL}/user`,
+        {
+          userName,
+          role,
+          password,
+          phoneNumber,
+          email,
+        }
+      );
 
-    if (response.status === 200) {
-      navigate("/");
+      if (response.status === 200) {
+        localStorage.setItem("userEmail", email);
+        navigate("/");
+      } else {
+        toast.error("Something went wrong! Try again.");
+      }
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      toast.error(error?.response?.data?.message);
     }
   };
 
@@ -181,17 +194,14 @@ const RegisterPage = () => {
             )}
           </div>
 
-          <button
-            type="submit"
-            className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary"
-          >
+          <Button disable={loading} loading={loading} width="100%">
             Register
-          </button>
+          </Button>
         </form>
         <p className="text-center mt-5 dark:text-white">
           Already Have an account?
           <Link to="/sign-in" className="font-semibold ml-1 text-primary">
-            Sing In
+            SIGN IN
           </Link>
         </p>
       </div>

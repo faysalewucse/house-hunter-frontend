@@ -1,6 +1,7 @@
 import { Home } from "../pages/Home/Home";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
+import PublicRoute from "./PublicRoute";
 
 export const userRouter = [
   {
@@ -9,10 +10,18 @@ export const userRouter = [
   },
   {
     path: "/sign-in",
-    element: <LoginPage />,
+    element: (
+      <PublicRoute>
+        <LoginPage />
+      </PublicRoute>
+    ),
   },
   {
     path: "/sign-up",
-    element: <RegisterPage />,
+    element: (
+      <PublicRoute>
+        <RegisterPage />
+      </PublicRoute>
+    ),
   },
 ];

@@ -7,16 +7,22 @@ import { MdOutlineWbSunny } from "react-icons/md";
 import { SlClose, SlMenu } from "react-icons/sl";
 import { HiMoon } from "react-icons/hi";
 import { useTheme } from "../../context/ThemeContext";
-import { useState } from "react";
+import { useAuth } from "../../context/AuthContext";
 
 export const Navbar = () => {
+  const { setCurentUser, open, isOpen, setOpen, setIsOpen } = useAuth();
+
   const { isDark, toggleDarkMode } = useTheme();
-  const [open, setOpen] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
+
+  const logoutHandler = () => {
+    localStorage.removeItem("userEmail");
+    setCurentUser(null);
+  };
+
   return (
     <div className="border-b-[1px] dark:border-gray-900 p-5 dark:bg-slate-950">
       <Container>
@@ -84,6 +90,7 @@ export const Navbar = () => {
                     </NavLink>
                   ))}
                   <NavLink
+                    onClick={logoutHandler}
                     className={`block px-4 py-2 text-red-500 hover:text-red-600`}
                   >
                     Log Out
