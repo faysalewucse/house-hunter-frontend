@@ -2,15 +2,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import axios from "axios";
 import Button from "../components/Shared/Button";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
 
 const LoginPage = () => {
-  const { setOpen, setCurrentUser } = useAuth();
+  const { setOpen, login: userLogin, loading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const {
@@ -19,31 +17,16 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data) => {
-    setLoading(true);
-    const { email, password } = data;
-
+  const onSubmit = async (userInfo) => {
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_BASE_API_URL}/login`,
-        {
-          email,
-          password,
-        }
-      );
+      const response = await userLogin(userInfo);
 
+      console.log(response);
       if (response.status === 200) {
-        localStorage.setItem("userEmail", email);
-
-        setCurrentUser(email);
-        navigate("/");
-      } else {
-        toast.error("Something went wrong! Try again.");
+        navigate("/dashboard");
       }
-      setLoading(false);
     } catch (error) {
-      setLoading(false);
-      toast.error(error?.response?.data?.message);
+      toast.error(error.message);
     }
   };
 
@@ -124,8 +107,8 @@ const LoginPage = () => {
         </form>
         <p className="text-center mt-5 dark:text-white">
           Don't have an account?
-          <Link to="/register" className="font-semibold ml-1 text-primary">
-            REGISTER
+          <Link to="/sign-up" className="font-semibold ml-1 text-primary">
+            Create an account
           </Link>
         </p>
       </div>

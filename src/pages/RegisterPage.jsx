@@ -2,15 +2,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import axios from "axios";
 import Button from "../components/Shared/Button";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
 
 const RegisterPage = () => {
-  const { setCurrentUser } = useAuth();
+  const { register: userRegister, loading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const {
@@ -19,33 +17,16 @@ const RegisterPage = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data) => {
-    setLoading(true);
-    const { userName, role, password, phoneNumber, email } = data;
-
+  const onSubmit = async (userInfo) => {
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_BASE_API_URL}/register`,
-        {
-          userName,
-          role,
-          password,
-          phoneNumber,
-          email,
-        }
-      );
+      const response = await userRegister(userInfo);
 
+      console.log(response);
       if (response.status === 200) {
-        localStorage.setItem("userEmail", email);
-        setCurrentUser(email);
-        navigate("/");
-      } else {
-        toast.error("Something went wrong! Try again.");
+        navigate("/dashboard");
       }
-      setLoading(false);
     } catch (error) {
-      setLoading(false);
-      toast.error(error?.response?.data?.message);
+      toast.error(error.message);
     }
   };
 

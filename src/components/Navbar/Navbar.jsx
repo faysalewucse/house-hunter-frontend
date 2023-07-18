@@ -12,6 +12,7 @@ export const Navbar = () => {
   const { currentUser, setCurentUser, open, isOpen, setOpen, setIsOpen } =
     useAuth();
 
+  console.log(currentUser);
   const { isDark, toggleDarkMode } = useTheme();
 
   const toggleDropdown = () => {
@@ -19,7 +20,8 @@ export const Navbar = () => {
   };
 
   const logoutHandler = () => {
-    localStorage.removeItem("userEmail");
+    localStorage.removeItem("user-email");
+    localStorage.removeItem("access-token");
     setCurentUser(null);
   };
 
@@ -76,44 +78,46 @@ export const Navbar = () => {
               </div>
 
               {/* Dropdown Avatar */}
-              <div className="relative inline-block">
-                <button
-                  className="flex items-center justify-center rounded-full bg-gray-200 w-10 h-10 border-2 border-primary p-1"
-                  onClick={toggleDropdown}
-                >
-                  <img
-                    src={avatar} // Replace with the path to your avatar image
-                    alt="Avatar"
-                    className={`rounded-full transition-transform object-cover ${
-                      isOpen ? "scale-110" : "scale-100"
-                    }`}
-                  />
-                </button>
-
-                {/* Dropdown menu */}
-                <div
-                  className={`${
-                    isOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"
-                  } transition-all duration-300 absolute right-0 mt-2 py-2 w-48 bg-white rounded-lg shadow-lg z-10 border border-gray-300`}
-                >
-                  {/* Menu items */}
-                  {dropdownItems.map((item, index) => (
-                    <NavLink
-                      to={item.route}
-                      key={index}
-                      className={`block px-4 py-2 hover:text-primary`}
-                    >
-                      {item.label}
-                    </NavLink>
-                  ))}
-                  <NavLink
-                    onClick={logoutHandler}
-                    className={`block px-4 py-2 text-red-500 hover:text-red-600`}
+              {currentUser && (
+                <div className="relative inline-block">
+                  <button
+                    className="flex items-center justify-center rounded-full bg-gray-200 w-10 h-10 border-2 border-primary p-1"
+                    onClick={toggleDropdown}
                   >
-                    Log Out
-                  </NavLink>
+                    <img
+                      src={avatar} // Replace with the path to your avatar image
+                      alt="Avatar"
+                      className={`rounded-full transition-transform object-cover ${
+                        isOpen ? "scale-110" : "scale-100"
+                      }`}
+                    />
+                  </button>
+
+                  {/* Dropdown menu */}
+                  <div
+                    className={`${
+                      isOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"
+                    } transition-all duration-300 absolute right-0 mt-2 py-2 w-48 bg-white rounded-lg shadow-lg z-10 border border-gray-300`}
+                  >
+                    {/* Menu items */}
+                    {dropdownItems.map((item, index) => (
+                      <NavLink
+                        to={item.route}
+                        key={index}
+                        className={`block px-4 py-2 hover:text-primary`}
+                      >
+                        {item.label}
+                      </NavLink>
+                    ))}
+                    <NavLink
+                      onClick={logoutHandler}
+                      className={`block px-4 py-2 text-red-500 hover:text-red-600`}
+                    >
+                      Log Out
+                    </NavLink>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </nav>
           <div onClick={() => setOpen(!open)} className="md:hidden text-2xl">
