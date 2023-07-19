@@ -21,7 +21,6 @@ const LoginPage = () => {
     try {
       const response = await userLogin(userInfo);
 
-      console.log(response);
       if (response.status === 200) {
         navigate("/dashboard");
       }

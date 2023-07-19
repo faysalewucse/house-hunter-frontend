@@ -1,26 +1,27 @@
 import { ImFacebook2, ImWhatsapp, ImTwitter } from "react-icons/im";
 import { Link, useNavigate } from "react-router-dom";
 import brand from "/brand.png";
+import { useAuth } from "../context/AuthContext";
 
 export default function Footer() {
-  const currentUser = false;
+  const currentUser = useAuth();
   const navigate = useNavigate();
 
   return (
-    <footer className="dark:bg-slate-950 dark:border-gray-800 border-t-[1px] dark:text-white p-5 md:p-24 md:text-left text-center">
+    <footer className="dark:bg-slate-950 dark:border-gray-800 border-t-[1px] dark:text-white p-5 md:p-12 md:text-left text-center">
       <div className="md:flex gap-10 max-w-7xl mx-auto">
         <div className="basis-1/2 md:text-justify text-center">
           <img
             onClick={() => navigate("/")}
-            className="w-1/3 mx-auto md:mx-0 md:w-1/3 cursor-pointer"
+            className="w-1/3 mx-auto md:mx-0 md:w-20 cursor-pointer"
             src={brand}
             alt="brand"
           />
           <p className="text-secondary2 my-5">
-            Our martial arts academy is not just a place to learn self-defense
-            techniques; its a sanctuary where you can unleash your potential,
-            build unwavering confidence, and cultivate the values of discipline,
-            respect, and perseverance
+            Find your perfect rental home with our convenient house renter web
+            app. Discover a wide selection of properties available for rent,
+            complete with detailed descriptions, high-quality photos, and
+            helpful search filters.
           </p>
           <div className="flex items-center justify-center md:justify-start text-2xl gap-3 cursor-pointer">
             <ImFacebook2 />
@@ -39,16 +40,16 @@ export default function Footer() {
             <Link className="hover:text-secondary" to="/blog">
               Blog
             </Link>
-            <Link className="hover:text-secondary" to="/alltoys">
-              Instructors
-            </Link>
             {currentUser && (
               <Link className="hover:text-secondary" to="/mytoys">
                 Dashboard
               </Link>
             )}
             {currentUser && (
-              <Link className="hover:text-secondary" onClick={() => {}}>
+              <Link
+                className="hover:text-secondary text-red-500"
+                onClick={() => {}}
+              >
                 Logout
               </Link>
             )}
@@ -89,12 +90,12 @@ export default function Footer() {
         <h1 className="text-secondary">
           &copy; 2023{" "}
           <span className="dark:text-white text-black font-bold">
-            Ninja School.
+            House Hunter.
           </span>{" "}
           All Rights Reserved
         </h1>
         <h1 className="text-secondary">
-          Powered by <b className="dark:text-white text-black">Ninja School</b>
+          Powered by <b className="dark:text-white text-black">House Hunter</b>
         </h1>
       </div>
     </footer>

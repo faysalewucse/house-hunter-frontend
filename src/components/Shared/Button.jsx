@@ -19,7 +19,7 @@ const Button = ({
       }}
       className={`${
         sm && "text-sm"
-      } text-center bg-primary py-2 px-6 text-white rounded`}
+      } text-center bg-primary hover:bg-sky-500 py-2 px-6 text-white rounded`}
     >
       {loading ? <Loading color="white" type="spinner" /> : children}
     </button>

@@ -1,5 +1,5 @@
 import Dashboard from "../pages/Dashboard/Dashboard";
-import MyHouses from "../pages/Dashboard/MyHouses";
+import ManageHouses from "../pages/Dashboard/ManageHouses";
 import { OwnerRoute } from "./OwnerRoute";
 import PrivateRoute from "./PrivateRoute";
 
@@ -13,10 +13,10 @@ export const dashboardRouter = [
     ),
   },
   {
-    path: "selectedClasses",
+    path: "manage-houses",
     element: (
       <OwnerRoute>
-        <MyHouses />
+        <ManageHouses />
       </OwnerRoute>
     ),
   },

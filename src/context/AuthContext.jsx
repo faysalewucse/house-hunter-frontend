@@ -17,14 +17,13 @@ export default function AuthProvider({ children }) {
 
   useEffect(() => {
     setLoading(true);
-    const userEmail = localStorage.getItem("user-email");
-    if (userEmail) {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
       axios
-        .get(`${import.meta.env.VITE_BASE_API_URL}/users/${userEmail}`)
+        .get(`${import.meta.env.VITE_BASE_API_URL}/users/${user.email}`)
         .then(({ data }) => {
-          console.log(data.email);
           setLoading(false);
-          setCurrentUser(data.email);
+          setCurrentUser(JSON.stringify(data));
         });
     } else {
       setLoading(false);
@@ -47,12 +46,11 @@ export default function AuthProvider({ children }) {
         userInfo
       );
 
-      console.log(res);
       if (res.status === 200) {
         setCurrentUser(userInfo.email);
         setLoading(false);
         localStorage.setItem("access-token", response.data.token);
-        localStorage.setItem("user-email", userInfo.email);
+        localStorage.setItem("user", JSON.stringify(userInfo));
         return res;
       }
     }
@@ -73,17 +71,25 @@ export default function AuthProvider({ children }) {
         userInfo
       );
 
-      console.log(res);
       if (res.status === 200) {
-        setCurrentUser(userInfo.email);
-        setLoading(false);
-        localStorage.setItem("access-token", response.data.token);
-        localStorage.setItem("user-email", userInfo.email);
-        return res;
+        axios
+          .get(`${import.meta.env.VITE_BASE_API_URL}/users/${userInfo.email}`)
+          .then(({ data }) => {
+            setLoading(false);
+            setCurrentUser(JSON.stringify(data));
+            localStorage.setItem("access-token", response.data.token);
+            localStorage.setItem("user", JSON.stringify(data));
+          });
       }
+      return res;
     }
   };
 
+  const logout = () => {
+    localStorage.removeItem("user-email");
+    localStorage.removeItem("access-token");
+    setCurrentUser(null);
+  };
   const value = {
     currentUser,
     loading,
@@ -94,6 +100,7 @@ export default function AuthProvider({ children }) {
     setIsOpen,
     register,
     login,
+    logout,
   };
 
   return (
