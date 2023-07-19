@@ -1,12 +1,11 @@
-import { Container } from "../../components/Container";
-import { useAuth } from "../../context/AuthContext";
+import Banner from "./Banner";
+import HouseList from "./HouseList";
 
 export const Home = () => {
-  const { currentUser } = useAuth();
-
   return (
     <div>
-      <Container> {currentUser || "Guest"}</Container>
+      <Banner />
+      <HouseList />
     </div>
   );
 };
