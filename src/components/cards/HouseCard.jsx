@@ -29,7 +29,7 @@ const HouseCard = ({ house, onClickEvent }) => {
       </div>
       <h1 className="text-sm">Room Size: {roomSize}</h1>
       <h1 className="flex items-center gap-2 text-sm">
-        Room Size: {phoneNumber} <span></span>
+        Phone Number: {phoneNumber} <span></span>
         <BiCopy color="green" className="hover:text-secondary cursor-pointer" />
       </h1>
       <h1 className="text-sm">Availability Date: {availabilityDate}</h1>

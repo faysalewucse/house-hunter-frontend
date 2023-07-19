@@ -224,7 +224,6 @@ const ManageHouses = () => {
         </div>
       )}
       <Modal
-        width="40%"
         closeButton
         aria-labelledby="modal-title"
         open={visible}

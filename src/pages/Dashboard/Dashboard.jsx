@@ -91,7 +91,6 @@ const Dashboard = () => {
     },
   });
 
-  console.log(userData);
   return (
     <div className="min-h-[80vh] p-20">
       {!isLoading ? (
@@ -108,7 +107,6 @@ const Dashboard = () => {
             <Button onClickEvent={openModal}>Add House +</Button>
           )}
           <Modal
-            width="40%"
             closeButton
             aria-labelledby="modal-title"
             open={visible}
