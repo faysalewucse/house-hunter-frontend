@@ -129,12 +129,12 @@ const ManageHouses = () => {
   };
 
   return (
-    <div className="dark:bg-slate-900 min-h-[90vh] dark:text-white py-10 text-slate-800">
+    <div className="dark:bg-slate-900 min-h-[90vh] dark:text-white py-5 text-slate-800">
       {!isLoading ? (
         <div className="max-w-screen-2xl mx-auto">
           <SectionHeader title={"My Houses"} />
-          {houses?.length > 0 ? (
-            <table className="w-full bg-transparent border-collapse my-10 text-center">
+          {houses?.houses?.length > 0 ? (
+            <table className="w-full bg-transparent border-collapse my-5 text-center">
               <thead className="text-center dark:bg-gray-200 bg-slate-800 dark:text-slate-800 text-white">
                 <tr className="border-b dark:border-gray-700">
                   <th className="py-2">Image</th>
