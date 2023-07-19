@@ -78,7 +78,7 @@ const HouseList = () => {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Login Now",
+        confirmButtonText: "LOGIN NOW",
       }).then((result) => {
         if (result.isConfirmed) {
           navigate("/sign-in");
@@ -216,7 +216,7 @@ const HouseList = () => {
             </Button>
           </div>
           {isLoading || isLoadingBookings ? (
-            <div className="flex justify-center items-center">
+            <div className="flex flex-grow justify-center items-center">
               <Loading size="lg" color={"success"} />
             </div>
           ) : (
@@ -249,13 +249,14 @@ const HouseList = () => {
                   />
                 ))}
               </div>
-              <Pagination
-                color="success"
-                onChange={(page) => setPageNumber(page)}
-                total={Math.ceil(houses?.totalHouse / 10)}
-                initialPage={1}
-                className="mt-5"
-              />
+              <div className="mt-5">
+                <Pagination
+                  color="success"
+                  onChange={(page) => setPageNumber(page)}
+                  total={Math.ceil(houses?.totalHouse / 10)}
+                  initialPage={1}
+                />
+              </div>
             </div>
           )}
         </div>
