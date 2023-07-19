@@ -216,8 +216,8 @@ const HouseList = () => {
             </Button>
           </div>
           {isLoading || isLoadingBookings ? (
-            <div>
-              <Loading size="lg" />
+            <div className="flex justify-center items-center">
+              <Loading size="lg" color={"success"} />
             </div>
           ) : (
             <div className="md:w-3/4 flex-grow ">
