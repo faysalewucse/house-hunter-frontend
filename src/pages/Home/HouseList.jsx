@@ -3,17 +3,20 @@ import { useAuth } from "../../context/AuthContext";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import HouseCard from "../../components/cards/HouseCard";
 import { Container } from "../../components/Container";
-import { Loading, Pagination } from "@nextui-org/react";
+import { Input, Loading, Pagination } from "@nextui-org/react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Shared/Button";
 import { useEffect, useState } from "react";
+import { BiSearchAlt } from "react-icons/bi";
+import { debounce } from "lodash";
 
 const HouseList = () => {
   const { currentUser } = useAuth();
   const [axiosSecure] = useAxiosSecure();
   const [pageNumber, setPageNumber] = useState(1);
-
+  const [searchFilter, setSearchFilter] = useState("");
+  const [searching, setSearching] = useState(false);
   const [cityFilter, setCityFilter] = useState("");
   const [bedroomsFilter, setBedroomsFilter] = useState("");
   const [bathroomsFilter, setBathroomsFilter] = useState("");
@@ -33,7 +36,7 @@ const HouseList = () => {
       const { data } = await axiosSecure.get(
         `${
           import.meta.env.VITE_BASE_API_URL
-        }/houses?page=${pageNumber}?&city=${cityFilter}`
+        }/houses?page=${pageNumber}&city=${cityFilter}&bedrooms=${bedroomsFilter}&bathrooms=${bathroomsFilter}&roomSize=${roomSizeFilter}&availabilityDate=${availabilityFilter}&rentPerMonth=${rentFilter}&houseName=${searchFilter}`
       );
       return data;
     },
@@ -67,9 +70,24 @@ const HouseList = () => {
     }
   };
 
+  const debounceDelay = 500;
+
+  const debouncedHandleSearch = debounce((value) => {
+    setSearching(true);
+    setSearchFilter(value);
+    refetch().then(() => {
+      setSearching(false);
+    });
+  }, debounceDelay);
+
+  const handleSearch = (e) => {
+    const value = e.target.value;
+    debouncedHandleSearch(value.toLowerCase());
+  };
+
   const inputStyle = "bg-white p-2 rounded mb-2 focus:outline-primary";
   return (
-    <div className="p-10 bg-gray-50 min-h-[80vh]">
+    <div className="p-10 bg-gray-200 min-h-[80vh]">
       <Container>
         <div className="flex gap-5">
           <div className="flex flex-col">
@@ -108,8 +126,8 @@ const HouseList = () => {
             />
 
             <input
-              type="text"
-              placeholder="Enter availability"
+              type="date"
+              placeholder="Enter availability Date"
               value={availabilityFilter}
               className={`${inputStyle}`}
               onChange={(e) => setAvailabilityFilter(e.target.value)}
@@ -117,7 +135,7 @@ const HouseList = () => {
 
             <input
               type="text"
-              placeholder="Enter rent"
+              placeholder="Enter rent <="
               value={rentFilter}
               className={`${inputStyle}`}
               onChange={(e) => setRentFilter(e.target.value)}
@@ -128,10 +146,23 @@ const HouseList = () => {
           </div>
           {isLoading ? (
             <div>
-              <Loading size="large" />
+              <Loading size="lg" />
             </div>
           ) : (
             <div className="w-3/4 flex-grow ">
+              <div className="mb-5">
+                <Input
+                  onChange={handleSearch}
+                  labelPlaceholder="Search With Name"
+                  contentRight={
+                    !searching ? (
+                      <BiSearchAlt />
+                    ) : (
+                      <Loading color="success" className="mr-3" size="sm" />
+                    )
+                  }
+                />
+              </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
                 {houses?.data?.map((house) => (
                   <HouseCard

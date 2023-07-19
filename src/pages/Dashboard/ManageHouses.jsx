@@ -222,7 +222,7 @@ const ManageHouses = () => {
         </div>
       ) : (
         <div className="flex items-center justify-center min-h-[60vh]">
-          <Loading size="large" />
+          <Loading size="lg" />
         </div>
       )}
       <Modal
