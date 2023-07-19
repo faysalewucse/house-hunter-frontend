@@ -1,7 +1,7 @@
 import { BiCopy } from "react-icons/bi";
 import Button from "../Shared/Button";
 
-const HouseCard = ({ house, onClickEvent }) => {
+const HouseCard = ({ house, onClickEvent, alreadyBooked }) => {
   const {
     image,
     houseName,
@@ -34,8 +34,8 @@ const HouseCard = ({ house, onClickEvent }) => {
       </h1>
       <h1 className="text-sm">Availability Date: {availabilityDate}</h1>
       <p className="underline text-sm mt-2 mb-5">See Details...</p>
-      <Button rounded="md" width="100%">
-        Book Now
+      <Button disable={alreadyBooked} rounded="md" width="100%">
+        {alreadyBooked ? "Already Booked" : "Book Now"}
       </Button>
     </div>
   );

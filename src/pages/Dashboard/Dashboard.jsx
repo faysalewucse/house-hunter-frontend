@@ -78,7 +78,7 @@ const Dashboard = () => {
   };
 
   const { isLoading, data: userData = [] } = useQuery({
-    queryKey: ["houses"],
+    queryKey: ["userData"],
     queryFn: async () => {
       const { data } = await axiosSecure.get(
         `${import.meta.env.VITE_BASE_API_URL}/${

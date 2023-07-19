@@ -18,9 +18,11 @@ const Button = ({
       style={{
         width: width,
       }}
-      className={`${
-        sm && "text-sm"
-      } text-center bg-primary hover:bg-green-900 py-2 px-6 text-white rounded-${rounded}`}
+      className={`${sm && "text-sm"} text-center ${
+        disable
+          ? "bg-gray-400 cursor-not-allowed text-gray-500"
+          : "hover:bg-green-900"
+      } bg-primary py-2 px-6 text-white rounded-${rounded}`}
     >
       {loading ? <Loading color="white" type="spinner" /> : children}
     </button>

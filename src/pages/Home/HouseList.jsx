@@ -46,6 +46,22 @@ const HouseList = () => {
     },
   });
 
+  const {
+    isLoadingBookings,
+    data: bookings = [],
+    refetch: refechBookings,
+  } = useQuery({
+    queryKey: ["bookings"],
+    queryFn: async () => {
+      const { data } = await axiosSecure.get(
+        `${import.meta.env.VITE_BASE_API_URL}/bookings/${currentUser?.email}`
+      );
+      return data;
+    },
+  });
+
+  console.log(bookings);
+
   useEffect(() => {
     refetch();
   }, [pageNumber, refetch]);
@@ -122,6 +138,7 @@ const HouseList = () => {
         if (res.status === 200) {
           closeModal();
           setLoading(false);
+          refechBookings();
           toast.success("House booked successfully");
         }
       });
@@ -136,7 +153,7 @@ const HouseList = () => {
     defaultValues.userName = currentUser?.userName;
     defaultValues.email = currentUser?.email;
     reset({ ...defaultValues });
-  }, [currentUser.userName, currentUser.email, reset]);
+  }, [currentUser?.userName, currentUser?.email, reset]);
 
   return (
     <div className="md:p-20 p-10 bg-gray-200 min-h-[80vh]">
@@ -196,7 +213,7 @@ const HouseList = () => {
               Filter
             </Button>
           </div>
-          {isLoading ? (
+          {isLoading && isLoadingBookings ? (
             <div>
               <Loading size="lg" />
             </div>
@@ -222,6 +239,9 @@ const HouseList = () => {
                   <HouseCard
                     key={house?._id}
                     house={house}
+                    alreadyBooked={bookings?.booked?.some(
+                      (booking) => booking.houseId === house._id
+                    )}
                     onClickEvent={() => bookTheHouse(house._id)}
                     userRole={currentUser?.role}
                   />
