@@ -121,6 +121,15 @@ const ManageHouses = () => {
     }
   };
 
+  const deleteHouse = (houseId) => {
+    axiosSecure.delete(`/houses/${houseId}`).then((res) => {
+      if (res.status === 200) {
+        refetch();
+        toast.success("House Deleted Successfully");
+      }
+    });
+  };
+
   return (
     <div className="dark:bg-slate-900 min-h-[90vh] dark:text-white py-10 text-slate-800">
       {!isLoading ? (
@@ -190,7 +199,9 @@ const ManageHouses = () => {
                             <span className="ml-1">Edit</span>
                           </button>
                           <button
-                            onClick={() => {}}
+                            onClick={() => {
+                              deleteHouse(house._id);
+                            }}
                             className="text-red-400 hover:text-red-500 hover:scale-105 transition-all duration-150"
                           >
                             <BsTrash className="inline-block w-5 h-5" />
