@@ -26,12 +26,10 @@ const ManageHouses = () => {
     data: houses = [],
     refetch,
   } = useQuery({
-    queryKey: ["houses", JSON.parse(currentUser)?.email],
+    queryKey: ["houses", currentUser?.email],
     queryFn: async () => {
       const { data } = await axiosSecure.get(
-        `${import.meta.env.VITE_BASE_API_URL}/houses/${
-          JSON.parse(currentUser)?.email
-        }`
+        `${import.meta.env.VITE_BASE_API_URL}/houses/${currentUser?.email}`
       );
       return data;
     },
@@ -154,7 +152,7 @@ const ManageHouses = () => {
               </thead>
 
               <tbody>
-                {houses?.map((house) => {
+                {houses?.houses?.map((house) => {
                   const {
                     _id,
                     image,
@@ -222,7 +220,7 @@ const ManageHouses = () => {
         </div>
       ) : (
         <div className="flex items-center justify-center min-h-[60vh]">
-          <Loading size="lg" />
+          <Loading size="lg" color={"success"} />
         </div>
       )}
       <Modal

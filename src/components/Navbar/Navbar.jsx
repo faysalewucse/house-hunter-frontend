@@ -106,6 +106,14 @@ export const Navbar = () => {
                       isOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"
                     } transition-all duration-300 absolute right-0 mt-2 py-2 w-48 bg-white rounded-lg shadow-lg z-10 border border-gray-300`}
                   >
+                    <NavLink
+                      className={`block px-4 py-2 text-white mx-2 rounded-lg bg-primary`}
+                    >
+                      {currentUser?.userName} <br />
+                      <small className="bg-white px-4 py-1 text-sm text-gray-800 rounded-md">
+                        {currentUser?.role}
+                      </small>
+                    </NavLink>
                     {/* Menu items */}
                     {dropdownItems.map(
                       (item, index) =>
@@ -119,6 +127,7 @@ export const Navbar = () => {
                           </NavLink>
                         )
                     )}
+
                     <NavLink
                       onClick={logoutHandler}
                       className={`block px-4 py-2 text-red-500 hover:text-red-600`}

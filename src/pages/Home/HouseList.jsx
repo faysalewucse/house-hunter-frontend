@@ -65,7 +65,7 @@ const HouseList = () => {
           navigate("/sign-in");
         }
       });
-    } else if (JSON.parse(currentUser)?.role === "houseOwner") {
+    } else if (currentUser?.role === "houseOwner") {
       Swal.fire("Opps!", "As a house owner you can't book houses", "error");
     }
   };
@@ -87,9 +87,9 @@ const HouseList = () => {
 
   const inputStyle = "bg-white p-2 rounded mb-2 focus:outline-primary";
   return (
-    <div className="p-10 bg-gray-200 min-h-[80vh]">
+    <div className="md:p-20 p-10 bg-gray-200 min-h-[80vh]">
       <Container>
-        <div className="flex gap-5">
+        <div className="md:flex gap-5">
           <div className="flex flex-col">
             <h1 className="text-xl font-semibold">Find your best fit</h1>
             <p className="text-sm text-secondary mb-5">Filter Houses By</p>
@@ -149,10 +149,12 @@ const HouseList = () => {
               <Loading size="lg" />
             </div>
           ) : (
-            <div className="w-3/4 flex-grow ">
+            <div className="md:w-3/4 flex-grow ">
               <div className="mb-5">
                 <Input
                   onChange={handleSearch}
+                  width="100%"
+                  className="mt-5 md:mt-0"
                   labelPlaceholder="Search With Name"
                   contentRight={
                     !searching ? (
@@ -163,13 +165,13 @@ const HouseList = () => {
                   }
                 />
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 {houses?.data?.map((house) => (
                   <HouseCard
                     key={house?._id}
                     house={house}
                     onClickEvent={bookTheHouse}
-                    userRole={JSON.parse(currentUser)?.role}
+                    userRole={currentUser?.role}
                   />
                 ))}
               </div>

@@ -36,7 +36,7 @@ const RegisterPage = () => {
         );
 
         if (res.status === 200) {
-          setCurrentUser(JSON.stringify(userInfo));
+          setCurrentUser({ ...userInfo, password: "" });
           setLoading(false);
           localStorage.setItem("access-token", response.data.token);
           localStorage.setItem("user", JSON.stringify(userInfo));

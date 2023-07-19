@@ -23,7 +23,7 @@ export default function AuthProvider({ children }) {
         .get(`${import.meta.env.VITE_BASE_API_URL}/users/${user.email}`)
         .then(({ data }) => {
           setLoading(false);
-          setCurrentUser(JSON.stringify(data));
+          setCurrentUser(data);
         });
     } else {
       setLoading(false);
@@ -51,7 +51,7 @@ export default function AuthProvider({ children }) {
           .get(`${import.meta.env.VITE_BASE_API_URL}/users/${userInfo.email}`)
           .then(({ data }) => {
             setLoading(false);
-            setCurrentUser(JSON.stringify(data));
+            setCurrentUser(data);
             localStorage.setItem("access-token", response.data.token);
             localStorage.setItem("user", JSON.stringify(data));
           });
@@ -83,7 +83,7 @@ export default function AuthProvider({ children }) {
         children
       ) : (
         <div className="flex items-center justify-center min-h-[80vh]">
-          <Loading size="lg" />
+          <Loading size="lg" color={"success"} />
         </div>
       )}
     </AuthContext.Provider>

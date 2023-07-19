@@ -1,26 +1,16 @@
 /* eslint-disable no-unused-vars */
-import {
-  MdClass,
-  MdManageAccounts,
-  MdOutlineFlightClass,
-  MdSpaceDashboard,
-} from "react-icons/md";
+import { MdPaid, MdSpaceDashboard } from "react-icons/md";
 import { AiOutlineSetting } from "react-icons/ai";
 import { MdOutlineAddHomeWork } from "react-icons/md";
 import { BiHelpCircle } from "react-icons/bi";
-import { GiNinjaArmor } from "react-icons/gi";
-import { FaUserShield } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
-import { BsCreditCard } from "react-icons/bs";
 import { SlClose } from "react-icons/sl";
 import { useAuth } from "../../../context/AuthContext";
-import { useState } from "react";
 
 export const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const { currentUser } = useAuth();
 
-  const [user, setUser] = useState(JSON.parse(currentUser));
-
+  console.log(currentUser);
   const menuItems = [
     {
       route: "Dashboard",
@@ -32,43 +22,13 @@ export const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
       route: "Manage Houses",
       path: "manage-houses",
       icon: <MdOutlineAddHomeWork />,
-      visible: user?.role === "houseOwner",
+      visible: currentUser?.role === "houseOwner",
     },
     {
-      route: "Enrolled Classes",
-      path: "enrolledClasses",
-      icon: <GiNinjaArmor />,
-      role: "student",
-    },
-    {
-      route: "Payments",
-      path: "payments",
-      icon: <BsCreditCard />,
-      role: "student",
-    },
-    {
-      route: "Add Class",
-      path: "addClass",
-      icon: <MdOutlineFlightClass />,
-      role: "instructor",
-    },
-    {
-      route: "My Classes",
-      path: "classes",
-      icon: <MdClass />,
-      role: "instructor",
-    },
-    {
-      route: "Manage Classes",
-      path: "manageClasses",
-      icon: <MdManageAccounts />,
-      role: "admin",
-    },
-    {
-      route: "Manage Users",
-      path: "manageUsers",
-      icon: <FaUserShield />,
-      role: "admin",
+      route: "Manage Bookings",
+      path: "manage-bookings",
+      icon: <MdPaid />,
+      visible: currentUser?.role === "houseRenter",
     },
   ];
 
