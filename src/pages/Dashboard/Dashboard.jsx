@@ -64,6 +64,7 @@ const Dashboard = () => {
           })
           .then((res) => {
             if (res.status === 200) {
+              refetch();
               closeModal();
               setLoading(false);
               toast.success("House Added Successfully");
@@ -77,7 +78,11 @@ const Dashboard = () => {
     }
   };
 
-  const { isLoading, data: userData = [] } = useQuery({
+  const {
+    isLoading,
+    data: userData = [],
+    refetch,
+  } = useQuery({
     queryKey: ["userData"],
     queryFn: async () => {
       const { data } = await axiosSecure.get(
@@ -92,7 +97,7 @@ const Dashboard = () => {
   });
 
   return (
-    <div className="min-h-[80vh] p-20">
+    <div className="min-h-[80vh] p-20 dark:bg-gray-900">
       {!isLoading ? (
         <Container>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-20">
@@ -107,6 +112,7 @@ const Dashboard = () => {
             <Button onClickEvent={openModal}>Add House +</Button>
           )}
           <Modal
+            width="600px"
             closeButton
             aria-labelledby="modal-title"
             open={visible}
@@ -122,7 +128,7 @@ const Dashboard = () => {
             <Modal.Body>
               <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="grid grid-cols-2 gap-x-5"
+                className="md:grid grid-cols-2 gap-x-5"
               >
                 <div className="mb-4">
                   <label

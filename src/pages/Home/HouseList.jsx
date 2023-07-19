@@ -49,18 +49,17 @@ const HouseList = () => {
   const {
     isLoadingBookings,
     data: bookings = [],
-    refetch: refechBookings,
+    refetch: refetchBookings,
   } = useQuery({
-    queryKey: ["bookings"],
+    queryKey: [`bookings/${currentUser?.email}`],
     queryFn: async () => {
       const { data } = await axiosSecure.get(
         `${import.meta.env.VITE_BASE_API_URL}/bookings/${currentUser?.email}`
       );
       return data;
     },
+    enabled: currentUser?.role === "houseRenter" ? true : false,
   });
-
-  console.log(bookings);
 
   useEffect(() => {
     refetch();
@@ -87,6 +86,8 @@ const HouseList = () => {
       });
     } else if (currentUser?.role === "houseOwner") {
       Swal.fire("Opps!", "As a house owner you can't book houses", "error");
+    } else if (bookings?.booked?.length >= 2) {
+      Swal.fire("Opps!", "You can booked only two houses at a time", "error");
     } else if (currentUser?.role === "houseRenter") {
       openModal(houseId);
     }
@@ -134,17 +135,18 @@ const HouseList = () => {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-      axiosSecure.post("/booking", { ...data, houseId }).then((res) => {
-        if (res.status === 200) {
+      const res = await axiosSecure.post("/booking", { ...data, houseId });
+
+      if (res.status === 200) {
+        refetchBookings().then(() => {
           closeModal();
-          setLoading(false);
-          refechBookings();
           toast.success("House booked successfully");
-        }
-      });
+        });
+      }
     } catch (error) {
-      toast.error(error.message);
+      closeModal;
       setLoading(false);
+      toast.error(error?.response?.data?.message);
     }
   };
 
@@ -213,7 +215,7 @@ const HouseList = () => {
               Filter
             </Button>
           </div>
-          {isLoading && isLoadingBookings ? (
+          {isLoading || isLoadingBookings ? (
             <div>
               <Loading size="lg" />
             </div>

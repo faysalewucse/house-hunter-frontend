@@ -40,11 +40,6 @@ export const Navbar = () => {
       label: "Dashboard",
       visible: currentUser ? true : false,
     },
-    {
-      route: "/my-houses",
-      label: "My Houses",
-      visible: currentUser ? true : false,
-    },
   ];
 
   return (

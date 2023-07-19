@@ -10,7 +10,6 @@ import { useAuth } from "../../../context/AuthContext";
 export const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const { currentUser } = useAuth();
 
-  console.log(currentUser);
   const menuItems = [
     {
       route: "Dashboard",

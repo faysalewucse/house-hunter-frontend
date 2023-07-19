@@ -20,7 +20,7 @@ const Button = ({
       }}
       className={`${sm && "text-sm"} text-center ${
         disable
-          ? "bg-gray-400 cursor-not-allowed text-gray-500"
+          ? "bg-gray-500 cursor-not-allowed text-gray-400"
           : "hover:bg-green-900"
       } bg-primary py-2 px-6 text-white rounded-${rounded}`}
     >
