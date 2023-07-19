@@ -120,10 +120,22 @@ const ManageHouses = () => {
   };
 
   const deleteHouse = (houseId) => {
-    axiosSecure.delete(`/houses/${houseId}`).then((res) => {
-      if (res.status === 200) {
-        refetch();
-        toast.success("House Deleted Successfully");
+    Swal.fire({
+      title: "Confirm",
+      text: "Are you sure you want to delete this",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Delete",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.delete(`/houses/${houseId}`).then((res) => {
+          if (res.status === 200) {
+            refetch();
+            toast.success("House Deleted Successfully");
+          }
+        });
       }
     });
   };
