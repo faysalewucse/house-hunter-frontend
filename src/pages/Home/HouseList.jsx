@@ -3,38 +3,155 @@ import { useAuth } from "../../context/AuthContext";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import HouseCard from "../../components/cards/HouseCard";
 import { Container } from "../../components/Container";
-import { Loading } from "@nextui-org/react";
+import { Loading, Pagination } from "@nextui-org/react";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
+import Button from "../../components/Shared/Button";
+import { useEffect, useState } from "react";
 
 const HouseList = () => {
   const { currentUser } = useAuth();
   const [axiosSecure] = useAxiosSecure();
+  const [pageNumber, setPageNumber] = useState(1);
 
-  const { isLoading, data: houses = [] } = useQuery({
+  const [cityFilter, setCityFilter] = useState("");
+  const [bedroomsFilter, setBedroomsFilter] = useState("");
+  const [bathroomsFilter, setBathroomsFilter] = useState("");
+  const [roomSizeFilter, setRoomSizeFilter] = useState("");
+  const [availabilityFilter, setAvailabilityFilter] = useState("");
+  const [rentFilter, setRentFilter] = useState("");
+
+  const navigate = useNavigate();
+
+  const {
+    isLoading,
+    data: houses = [],
+    refetch,
+  } = useQuery({
     queryKey: ["houses"],
     queryFn: async () => {
       const { data } = await axiosSecure.get(
-        `${import.meta.env.VITE_BASE_API_URL}/houses/${
-          JSON.parse(currentUser)?.email
-        }`
+        `${
+          import.meta.env.VITE_BASE_API_URL
+        }/houses?page=${pageNumber}?&city=${cityFilter}`
       );
       return data;
     },
   });
 
+  useEffect(() => {
+    refetch();
+  }, [pageNumber, refetch]);
+
+  const filterHouses = () => {
+    refetch();
+  };
+
+  const bookTheHouse = () => {
+    if (!currentUser) {
+      Swal.fire({
+        title: "Opps!",
+        text: "You need to login for booking houses",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Login Now",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/sign-in");
+        }
+      });
+    } else if (JSON.parse(currentUser)?.role === "houseOwner") {
+      Swal.fire("Opps!", "As a house owner you can't book houses", "error");
+    }
+  };
+
+  const inputStyle = "bg-white p-2 rounded mb-2 focus:outline-primary";
   return (
-    <div className="p-10 bg-gray-50">
+    <div className="p-10 bg-gray-50 min-h-[80vh]">
       <Container>
-        {!isLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-            {houses.map((house) => (
-              <HouseCard key={house?._id} house={house} />
-            ))}
+        <div className="flex gap-5">
+          <div className="flex flex-col">
+            <h1 className="text-xl font-semibold">Find your best fit</h1>
+            <p className="text-sm text-secondary mb-5">Filter Houses By</p>
+            <input
+              type="text"
+              placeholder="Enter city"
+              value={cityFilter}
+              className={`${inputStyle}`}
+              onChange={(e) => setCityFilter(e.target.value)}
+            />
+
+            <input
+              type="number"
+              placeholder="Enter bedrooms"
+              value={bedroomsFilter}
+              className={`${inputStyle}`}
+              onChange={(e) => setBedroomsFilter(e.target.value)}
+            />
+
+            <input
+              type="number"
+              placeholder="Enter bathrooms"
+              value={bathroomsFilter}
+              className={`${inputStyle}`}
+              onChange={(e) => setBathroomsFilter(e.target.value)}
+            />
+
+            <input
+              type="text"
+              placeholder="Enter room size"
+              value={roomSizeFilter}
+              className={`${inputStyle}`}
+              onChange={(e) => setRoomSizeFilter(e.target.value)}
+            />
+
+            <input
+              type="text"
+              placeholder="Enter availability"
+              value={availabilityFilter}
+              className={`${inputStyle}`}
+              onChange={(e) => setAvailabilityFilter(e.target.value)}
+            />
+
+            <input
+              type="text"
+              placeholder="Enter rent"
+              value={rentFilter}
+              className={`${inputStyle}`}
+              onChange={(e) => setRentFilter(e.target.value)}
+            />
+            <Button onClickEvent={filterHouses} rounded="md">
+              Filter
+            </Button>
           </div>
-        ) : (
-          <div className="flex justify-center items-center">
-            <Loading size="large" />
-          </div>
-        )}
+          {isLoading ? (
+            <div>
+              <Loading size="large" />
+            </div>
+          ) : (
+            <div className="w-3/4 flex-grow ">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+                {houses?.data?.map((house) => (
+                  <HouseCard
+                    key={house?._id}
+                    house={house}
+                    onClickEvent={bookTheHouse}
+                    userRole={JSON.parse(currentUser)?.role}
+                  />
+                ))}
+              </div>
+              <Pagination
+                color="success"
+                onChange={(page) => setPageNumber(page)}
+                total={Math.ceil(houses?.totalHouse / 10)}
+                initialPage={1}
+                className="mt-5"
+              />
+            </div>
+          )}
+        </div>
       </Container>
     </div>
   );

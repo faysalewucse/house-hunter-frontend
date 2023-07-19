@@ -1,7 +1,7 @@
 import { BiCopy } from "react-icons/bi";
 import Button from "../Shared/Button";
 
-const HouseCard = ({ house }) => {
+const HouseCard = ({ house, onClickEvent }) => {
   const {
     image,
     houseName,
@@ -9,17 +9,19 @@ const HouseCard = ({ house }) => {
     bedrooms,
     bathrooms,
     roomSize,
+    city,
     phoneNumber,
     rentPerMonth,
     availabilityDate,
   } = house;
   return (
-    <div className="bg-white shadow-lg rounded-xl p-5">
+    <div onClick={onClickEvent} className="bg-white shadow-lg rounded-xl p-5">
       <img className="rounded-lg h-40 object-cover w-full" src={image} alt="" />
       <div className="flex justify-between mt-2">
         <h1 className="font-bold text-lg">{houseName}</h1>
         <h1 className="font-semibold text-md">Rent:{rentPerMonth}TK</h1>
       </div>
+      <h1 className="font-bold text-lg">({city})</h1>
       <h1 className="text-sm text-secondary">{address}</h1>
       <div className="flex justify-between">
         <h1 className="text-sm">Bed Rooms: {bedrooms}</h1>
@@ -31,8 +33,10 @@ const HouseCard = ({ house }) => {
         <BiCopy color="green" className="hover:text-secondary cursor-pointer" />
       </h1>
       <h1 className="text-sm">Availability Date: {availabilityDate}</h1>
-      <p className="mt-2 mb-5">See Details</p>
-      <Button width="100%">Book Now</Button>
+      <p className="underline text-sm mt-2 mb-5">See Details...</p>
+      <Button rounded="md" width="100%">
+        Book Now
+      </Button>
     </div>
   );
 };

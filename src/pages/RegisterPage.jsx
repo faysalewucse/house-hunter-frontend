@@ -1,14 +1,16 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import Button from "../components/Shared/Button";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
+import axios from "axios";
 
 const RegisterPage = () => {
-  const { register: userRegister, loading } = useAuth();
+  const { setCurrentUser, setOpen, setIsOpen } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const {
@@ -19,16 +21,43 @@ const RegisterPage = () => {
 
   const onSubmit = async (userInfo) => {
     try {
-      const response = await userRegister(userInfo);
+      setLoading(true);
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_API_URL}/jwt`,
+        {
+          email: userInfo.email,
+        }
+      );
 
-      console.log(response);
+      if (response.status === 200) {
+        const res = await axios.post(
+          `${import.meta.env.VITE_BASE_API_URL}/register`,
+          userInfo
+        );
+
+        if (res.status === 200) {
+          setCurrentUser(JSON.stringify(userInfo));
+          setLoading(false);
+          localStorage.setItem("access-token", response.data.token);
+          localStorage.setItem("user", JSON.stringify(userInfo));
+          return res;
+        }
+      }
+
       if (response.status === 200) {
         navigate("/dashboard");
       }
     } catch (error) {
-      toast.error(error.message);
+      setLoading(false);
+      toast.error(error?.response?.data?.message);
     }
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    setOpen(false);
+    setIsOpen(false);
+  }, [setOpen, setIsOpen]);
 
   return (
     <div className="p-5 flex items-center justify-center min-h-[80vh]">

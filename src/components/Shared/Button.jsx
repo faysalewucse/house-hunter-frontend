@@ -8,6 +8,7 @@ const Button = ({
   width,
   type,
   disable,
+  rounded = "full",
 }) => {
   return (
     <button
@@ -19,7 +20,7 @@ const Button = ({
       }}
       className={`${
         sm && "text-sm"
-      } text-center bg-primary hover:bg-green-900 py-2 px-6 text-white rounded-full`}
+      } text-center bg-primary hover:bg-green-900 py-2 px-6 text-white rounded-${rounded}`}
     >
       {loading ? <Loading color="white" type="spinner" /> : children}
     </button>

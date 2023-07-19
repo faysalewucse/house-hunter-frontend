@@ -5,7 +5,7 @@ import Button from "../../components/Shared/Button";
 
 const Banner = () => {
   return (
-    <div className="relative">
+    <div className="relative dark:bg-slate-950">
       <img
         className="absolute top-0 left-0 md:w-1/3 w-3/4"
         src={corner}
@@ -22,7 +22,7 @@ const Banner = () => {
             <h1 className="text-primary font-bold md:text-7xl text-4xl">
               House Hunter
             </h1>
-            <p className="text-secondary2 my-5 md:w-3/4 mx-auto md:mx-0 text-justify">
+            <p className="text-secondary2 my-5 md:w-3/4 mx-auto md:mx-0 text-justify dark:text-white">
               Find your perfect rental home with our convenient house renter web
               app. Discover a wide selection of properties available for rent,
               complete with detailed descriptions, high-quality photos, and

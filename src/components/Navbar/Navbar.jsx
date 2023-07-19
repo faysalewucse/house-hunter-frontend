@@ -29,7 +29,7 @@ export const Navbar = () => {
     { route: "/about", label: "About", visible: true },
     {
       route: "/sign-in",
-      label: "Login",
+      label: "LOGIN",
       visible: !currentUser ? true : false,
     },
   ];

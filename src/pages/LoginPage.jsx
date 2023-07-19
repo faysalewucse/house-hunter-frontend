@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
 
 const LoginPage = () => {
-  const { setOpen, login: userLogin, loading } = useAuth();
+  const { setIsOpen, setOpen, login: userLogin, loading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
@@ -29,7 +29,11 @@ const LoginPage = () => {
     }
   };
 
-  useEffect(() => setOpen(false), [setOpen]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    setOpen(false);
+    setIsOpen(false);
+  }, [setOpen, setIsOpen]);
 
   return (
     <div className="p-5 flex items-center justify-center min-h-[80vh]">
