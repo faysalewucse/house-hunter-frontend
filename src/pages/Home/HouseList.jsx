@@ -164,14 +164,28 @@ const HouseList = () => {
           <div className="flex flex-col">
             <h1 className="text-xl font-semibold">Find your best fit</h1>
             <p className="text-sm text-secondary mb-5">Filter Houses By</p>
-            <input
-              type="text"
-              placeholder="Enter city"
-              value={cityFilter}
+
+            <select
+              name="city"
+              id="city"
               className={`${inputStyle}`}
               onChange={(e) => setCityFilter(e.target.value)}
-            />
-
+            >
+              <option value="" disabled selected>
+                Select a city
+              </option>
+              <option value="Dhaka">Dhaka</option>
+              <option value="Chattogram">Chattogram</option>
+              <option value="Khulna">Khulna</option>
+              <option value="Sylhet">Sylhet</option>
+              <option value="Rajshahi">Rajshahi</option>
+              <option value="Mymensingh">Mymensingh</option>
+              <option value="Rangpur">Rangpur</option>
+              <option value="Barisal">Barisal</option>
+              <option value="Cumilla">Cumilla</option>
+              <option value="Gazipur">Gazipur</option>
+              <option value="Narayanganj">Narayanganj</option>
+            </select>
             <input
               type="number"
               placeholder="Enter bedrooms"
@@ -188,14 +202,20 @@ const HouseList = () => {
               onChange={(e) => setBathroomsFilter(e.target.value)}
             />
 
-            <input
-              type="text"
-              placeholder="Enter room size"
-              value={roomSizeFilter}
+            <select
+              name="roomSize"
+              id="roomSize"
               className={`${inputStyle}`}
               onChange={(e) => setRoomSizeFilter(e.target.value)}
-            />
-
+            >
+              <option value="" disabled selected>
+                Enter room size
+              </option>
+              <option value="small">Small</option>
+              <option value="medium">Medium</option>
+              <option value="large">Large</option>
+              <option value="extra large">Extra Large</option>
+            </select>
             <input
               type="date"
               placeholder="Enter availability Date"

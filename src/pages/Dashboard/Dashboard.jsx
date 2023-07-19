@@ -176,14 +176,28 @@ const Dashboard = () => {
                   <label htmlFor="city" className="block mb-2 font-semibold ">
                     City <span className="text-primary">*</span>
                   </label>
-                  <input
-                    type="text"
+
+                  <select
                     id="city"
+                    name="city"
                     {...register("city", { required: true })}
                     className={`border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-primary w-full ${
                       errors.city ? "ring-2 ring-red-500" : ""
                     }`}
-                  />
+                  >
+                    <option value="">Select a city</option>
+                    <option value="Dhaka">Dhaka</option>
+                    <option value="Chattogram">Chattogram</option>
+                    <option value="Khulna">Khulna</option>
+                    <option value="Sylhet">Sylhet</option>
+                    <option value="Rajshahi">Rajshahi</option>
+                    <option value="Mymensingh">Mymensingh</option>
+                    <option value="Rangpur">Rangpur</option>
+                    <option value="Barisal">Barisal</option>
+                    <option value="Cumilla">Cumilla</option>
+                    <option value="Gazipur">Gazipur</option>
+                    <option value="Narayanganj">Narayanganj</option>
+                  </select>
                   {errors.city && (
                     <span className="text-red-500 text-sm">
                       City is required
@@ -240,14 +254,20 @@ const Dashboard = () => {
                   >
                     Room Size <span className="text-primary">*</span>
                   </label>
-                  <input
-                    type="text"
+
+                  <select
+                    name="roomSize"
                     id="roomSize"
                     {...register("roomSize", { required: true })}
                     className={`border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-primary w-full ${
                       errors.roomSize ? "ring-2 ring-red-500" : ""
                     }`}
-                  />
+                  >
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                    <option value="extra Large">Extra Large</option>
+                  </select>
                   {errors.roomSize && (
                     <span className="text-red-500 text-sm">
                       Room Size is required
