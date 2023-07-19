@@ -31,35 +31,6 @@ export default function AuthProvider({ children }) {
     }
   }, []);
 
-  const login = async (userInfo) => {
-    setLoading(true);
-    const response = await axios.post(
-      `${import.meta.env.VITE_BASE_API_URL}/jwt`,
-      {
-        email: userInfo.email,
-      }
-    );
-
-    if (response.status === 200) {
-      const res = await axios.post(
-        `${import.meta.env.VITE_BASE_API_URL}/login`,
-        userInfo
-      );
-
-      if (res.status === 200) {
-        axios
-          .get(`${import.meta.env.VITE_BASE_API_URL}/users/${userInfo.email}`)
-          .then(({ data }) => {
-            setLoading(false);
-            setCurrentUser(data);
-            localStorage.setItem("access-token", response.data.token);
-            localStorage.setItem("user", JSON.stringify(data));
-          });
-      }
-      return res;
-    }
-  };
-
   const logout = () => {
     localStorage.removeItem("user-email");
     localStorage.removeItem("access-token");
@@ -73,7 +44,6 @@ export default function AuthProvider({ children }) {
     setOpen,
     isOpen,
     setIsOpen,
-    login,
     logout,
   };
 

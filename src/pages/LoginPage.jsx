@@ -5,9 +5,11 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import Button from "../components/Shared/Button";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
+import axios from "axios";
 
 const LoginPage = () => {
-  const { setIsOpen, setOpen, login: userLogin, loading } = useAuth();
+  const { setIsOpen, setOpen, setCurrentUser } = useAuth();
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
@@ -19,13 +21,40 @@ const LoginPage = () => {
 
   const onSubmit = async (userInfo) => {
     try {
-      const response = await userLogin(userInfo);
+      setLoading(true);
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_API_URL}/jwt`,
+        {
+          email: userInfo.email,
+        }
+      );
+
+      if (response.status === 200) {
+        const res = await axios.post(
+          `${import.meta.env.VITE_BASE_API_URL}/login`,
+          userInfo
+        );
+
+        if (res.status === 200) {
+          axios
+            .get(`${import.meta.env.VITE_BASE_API_URL}/users/${userInfo.email}`)
+            .then(({ data }) => {
+              setLoading(false);
+              setCurrentUser(data);
+              localStorage.setItem("access-token", response.data.token);
+              localStorage.setItem("user", JSON.stringify(data));
+            });
+        }
+        return res;
+      }
 
       if (response.status === 200) {
         navigate("/dashboard");
       }
     } catch (error) {
-      toast.error(error.message);
+      console.log(error);
+      setLoading(false);
+      toast.error(error?.response?.data?.message);
     }
   };
 

@@ -21,8 +21,8 @@ const Button = ({
       className={`${sm && "text-sm"} text-center ${
         disable
           ? "bg-gray-500 cursor-not-allowed text-gray-400"
-          : "hover:bg-green-900"
-      } bg-primary py-2 px-6 text-white rounded-${rounded}`}
+          : "bg-primary text-white hover:bg-green-900"
+      } py-2 px-6 rounded-${rounded}`}
     >
       {loading ? <Loading color="white" type="spinner" /> : children}
     </button>
